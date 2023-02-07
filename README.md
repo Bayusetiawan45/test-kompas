@@ -17,10 +17,25 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ## Installation
 
 1. Clone the repository
+```
+git clone https://github.com/Bayusetiawan45/test-kompas.git
+```
 2. Navigate to the project directory
+```
+cd test-kompas
+```
 3. Install the dependencies
+```
+yarn install
+```
 4. Start the development server
+```
+yarn dev
+```
 5. Start the json-server
+```
+json-server --watch db.json
+```
 
 ## Usage
 
