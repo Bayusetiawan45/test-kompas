@@ -2,7 +2,7 @@
   <table class="table-auto">
     <thead>
       <tr>
-        <th class="text-lg font-medium">
+        <th class="text-lg font-medium text-start" colspan="2">
           {{ item.date }}
         </th>
       </tr>
@@ -13,8 +13,8 @@
         :key="index"
         class="border-t text-sm text-gray-500"
       >
-        <td class="py-1">{{ udin.jam }}</td>
-        <td class="py-1">{{ udin.nama }}</td>
+        <td class="py-1 w-16">{{ udin.jam }}</td>
+        <td class="py-1 w-40">{{ udin.nama }}</td>
         <td class="py-1">{{ currencyFormat(udin.pengeluaraan) }}</td>
       </tr>
     </tbody>

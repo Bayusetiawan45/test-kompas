@@ -1,7 +1,7 @@
 <template>
   <Modal v-if="isOpenModal" :handleToggleModal="handleToggleModal" />
   <div class="flex flex-col items-center space-y-2">
-    <h1 class="text-2xl">Diari Jajan Februari 2023</h1>
+    <h1 class="text-2xl">Diari Jajan {{ currentMonth }}</h1>
     <span>Pengeluaran bulan ini Rp.{{ total_expenses }}</span>
     <button
       class="bg-purple-700 text-xs py-2 px-3 rounded-sm text-white uppercase"
@@ -13,7 +13,7 @@
       <div
         v-for="(item, index) in items"
         :key="index"
-        class="aspect-square p-2 rounded-md border"
+        class="aspect-square p-4 rounded-md border"
       >
         <Table :item="item" />
       </div>
@@ -39,13 +39,13 @@ export default {
   },
   async mounted() {
     const items = await this.getAllItems();
-    this.getItems(items);
+    this.getItemsFromStore(items);
   },
   computed: {
     ...mapGetters(['items', 'total_expenses']),
   },
   methods: {
-    ...mapActions(['getItems']),
+    ...mapActions(['getItemsFromStore']),
     getAllItems,
     handleToggleModal() {
       return (this.isOpenModal = !this.isOpenModal);

@@ -1,16 +1,16 @@
 <template>
   <div
-    class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center"
+    class="fixed bottom-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center"
   >
     <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
     <div
-      class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6 space-y-4"
+      class="bg-white rounded-sm px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-sm sm:w-full sm:p-6 space-y-4"
     >
       <span class="text-xl font-semibold">Tambah Entri</span>
       <form @submit="submitForm">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
-            Name
+            Nama
           </label>
           <input
             class="shadow appearance-none border rounded py-2 px-3 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -73,7 +73,7 @@ export default {
     onCancel() {
       this.handleToggleModal();
     },
-    ...mapActions(['postItem']),
+    ...mapActions(['addItemToStore']),
     randomUUID,
     getTime,
     async submitForm(e) {
@@ -90,7 +90,7 @@ export default {
       };
       if (data.nama !== '' && data.pengeluaraan !== '') {
         const res = await postItems(data);
-        this.postItem(res.data);
+        this.addItemToStore(res.data);
         this.handleToggleModal()
       }
     },

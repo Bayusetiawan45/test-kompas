@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { getTime } from '../helpers/getTime';
+import { getTime, monthName } from '../helpers/getTime';
 
 export default createStore({
   state: {
@@ -11,36 +11,50 @@ export default createStore({
     total_expenses: (state) => state.total_expenses,
   },
   actions: {
-    getItems({ commit }, item) {
-      commit('getAllItems', item);
+    getItemsFromStore({ commit }, item) {
+      commit('getItemsFromStore', item);
     },
-    postItem({ commit }, item) {
-      commit('postItem', item);
+    addItemToStore({ commit }, item) {
+      commit('addItemToStore', item);
     },
   },
   mutations: {
-    getAllItems(state, item) {
+    getItemsFromStore(state, item) {
+      // grouping data by date
       const groupedItem = item.reduce((acc, curr) => {
+        const now = getTime('noDay');
+
+        // reusable variable
         const date = curr.tanggal;
         const indexOfItem = acc.findIndex((item) => item.date === date);
 
-        const now = getTime('fullDate');
+        // format date per curr item to Februari 2023 / Month Years
+        const newDate = new Date(date);
+        const month = `${monthName[newDate.getMonth()]}`;
+        const years = newDate.getFullYear();
+        const newCurrDate = `${month} ${years}`;
 
-        if (date.includes(now)) {
+        // check all items includes current month
+        if (newCurrDate.includes(now)) {
           state.total_expenses =
             state.total_expenses + parseInt(curr.pengeluaraan);
         }
 
+        // if nothing list item at curr month
         if (indexOfItem === -1) {
           const newFormOfObject = {
-            date: date,
+            date,
             list_item: [curr],
             total: parseInt(curr.pengeluaraan),
           };
           acc.push(newFormOfObject);
           return acc;
         }
+
+        // if list item at curr month already exist
         acc[indexOfItem].list_item.push(curr);
+
+        // update new field total
         acc[indexOfItem].total =
           parseInt(curr.pengeluaraan) + acc[indexOfItem].total;
         return acc;
@@ -50,7 +64,8 @@ export default createStore({
       });
       state.items = sortGroupedItem;
     },
-    postItem(state, item) {
+    addItemToStore(state, item) {
+      // form input value
       const { id, jam, nama, pengeluaraan } = item;
       const newItem = {
         id,
@@ -59,17 +74,23 @@ export default createStore({
         nama,
         pengeluaraan,
       };
+      // reusable variable
       const indexOfItem = state.items.findIndex(
         (stateItem) => stateItem.date === newItem.date
       );
+      // if nothing item at curr month
       if (indexOfItem === -1) {
         const newFormOfObject = {
           date: newItem.date,
           list_item: [newItem],
+          total: parseInt(pengeluaraan),
         };
         state.items.unshift(newFormOfObject);
+        // update total expenses state
+        state.total_expenses = state.total_expenses + parseInt(pengeluaraan);
         return;
       }
+      // if item at curr month already exist
       state.items = [
         ...state.items.slice(0, indexOfItem),
         {
@@ -79,6 +100,7 @@ export default createStore({
         },
         ...state.items.slice(indexOfItem + 1),
       ];
+      // update total expenses state
       state.total_expenses = state.total_expenses + parseInt(pengeluaraan);
     },
   },
