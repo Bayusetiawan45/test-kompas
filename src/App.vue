@@ -15,7 +15,7 @@
         :key="index"
         class="aspect-square p-4 rounded-md border"
       >
-        <Table :item="item" />
+        <Table :data="item" />
       </div>
     </div>
   </div>

@@ -3,25 +3,26 @@
     <thead>
       <tr>
         <th class="text-lg font-medium text-start" colspan="2">
-          {{ item.date }}
+          {{ data.date }}
         </th>
       </tr>
     </thead>
     <tbody>
       <tr
-        v-for="(udin, index) in item.list_item"
-        :key="index"
+        v-for="item in data.list_item"
+        :key="item.id"
         class="border-t text-sm text-gray-500"
       >
-        <td class="py-1 w-16">{{ udin.jam }}</td>
-        <td class="py-1 w-40">{{ udin.nama }}</td>
-        <td class="py-1">{{ currencyFormat(udin.pengeluaraan) }}</td>
+        <td class="py-1 w-16">{{ item.jam }}</td>
+        <td class="py-1 w-40">{{ item.nama }}</td>
+        <td class="py-1">{{ currencyFormat(item.pengeluaraan) }}</td>
       </tr>
     </tbody>
     <tfoot>
-      <tr class="font-bold border-t">
-        <td colspan="2">Total</td>
-        <td>{{ currencyFormat(item.total) }}</td>
+      <tr class="font-bold border-t-2">
+        <td></td>
+        <td class="text-center">Total</td>
+        <td>{{ currencyFormat(data.total) }}</td>
       </tr>
     </tfoot>
   </table>
@@ -32,7 +33,7 @@ import { currencyFormat } from '../helpers/formatCurrency'
 
 export default {
   name: 'Table',
-  props: ['item'],
+  props: ['data'],
   methods: {
     currencyFormat
   }
